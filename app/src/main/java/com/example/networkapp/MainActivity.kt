@@ -40,6 +40,8 @@ class MainActivity : AppCompatActivity() {
         showButton = findViewById<Button>(R.id.showComicButton)
         comicImageView = findViewById<ImageView>(R.id.comicImageView)
 
+        loadComic()
+
         showButton.setOnClickListener {
             downloadComic(numberEditText.text.toString())
         }
@@ -75,7 +77,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Implement this function
-    private fun saveComic(comicObject: JSONObject) {
+    private fun saveComic(comicObject: JSONObject)
+    {
         val sharedPreferences = getSharedPreferences("comics", MODE_PRIVATE)
         val editor = sharedPreferences.edit()
 
@@ -85,6 +88,22 @@ class MainActivity : AppCompatActivity() {
 
         //notify user of saved comics
         Toast.makeText(this, "Comic saved", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun loadComic()
+    {
+        val sharedPreferences = getSharedPreferences("comics", MODE_PRIVATE)
+        val savedComic = sharedPreferences.getString("saved_comic", null)
+
+        if(savedComic != null)
+        {
+            val comic = JSONObject(savedComic)
+            showComic(comic)
+        }
+        else
+        {
+            Toast.makeText(this, "No comic found", Toast.LENGTH_SHORT).show()
+        }
     }
 
 
