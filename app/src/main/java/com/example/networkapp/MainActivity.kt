@@ -47,15 +47,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Fetches comic from web as JSONObject
-    private fun downloadComic (comicId: String) {
+    //fixing error
+    private fun downloadComic(comicId: String) {
         val url = "https://xkcd.com/$comicId/info.0.json"
-        requestQueue.add (
-            JsonObjectRequest(url
-                , {showComic(it)}
-                , {}
+        requestQueue.add(
+            JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                { showComic(it) },
+                { error ->
+                    Toast.makeText(this, "Error: ${error.message}", Toast.LENGTH_LONG).show()
+                }
             )
         )
     }
+
 
     // Display a comic for a given comic JSON object
     private fun showComic (comicObject: JSONObject) {
