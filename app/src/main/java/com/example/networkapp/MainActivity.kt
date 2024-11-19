@@ -69,11 +69,22 @@ class MainActivity : AppCompatActivity() {
         titleTextView.text = comicObject.getString("title")
         descriptionTextView.text = comicObject.getString("alt")
         Picasso.get().load(comicObject.getString("img")).into(comicImageView)
+
+        //implement save
+        saveComic(comicObject)
     }
 
     // Implement this function
     private fun saveComic(comicObject: JSONObject) {
+        val sharedPreferences = getSharedPreferences("comics", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
 
+        //save json
+        editor.putString("saved_comic", comicObject.toString())
+        editor.apply()
+
+        //notify user of saved comics
+        Toast.makeText(this, "Comic saved", Toast.LENGTH_SHORT).show()
     }
 
 
